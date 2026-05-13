@@ -1,0 +1,36 @@
+.dark-mode {
+  background: #111827;
+}
+
+.dark-mode .card,
+.dark-mode .stat-card,
+.dark-mode .task-item,
+.dark-mode .task-modal,
+.dark-mode .sidebar {
+  background: #1f2937;
+  color: white;
+}
+
+.dark-mode .quote-card {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.dark-mode input,
+.dark-mode select {
+  background: #111827;
+  color: white;
+}
+
+.dark-mode .task-item p {
+  color: #d1d5db;
+}
+
+.dark-mode .topbar h1,
+.dark-mode .stat-card h3,
+.dark-mode .stat-card h2,
+.dark-mode .progress-card h2,
+.dark-mode .clock-card h2,
+.dark-mode .timer-card h2,
+.dark-mode .task-header h2 {
+  color: white;
+}

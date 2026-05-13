@@ -4,15 +4,31 @@
 
 const clock = document.getElementById("clock");
 
-const taskList = document.querySelector(".task-list");
+const greeting = document.getElementById("greeting");
 
-const progressCircle = document.querySelector(".progress-circle");
+const quote = document.getElementById("quote");
+
+const streakElement = document.querySelector(".streak");
 
 const levelText = document.querySelector(".level");
 
-/* =========================
-   MODAL ELEMENTS
-========================= */
+const progressCircle = document.querySelector(".progress-circle");
+
+const taskList = document.querySelector(".task-list");
+
+const totalTasksElement = document.getElementById("totalTasks");
+
+const completedTasksElement = document.getElementById("completedTasks");
+
+const focusSessionsElement = document.getElementById("focusSessions");
+
+const productivityScoreElement = document.getElementById("productivityScore");
+
+/* Theme */
+
+const themeToggle = document.getElementById("themeToggle");
+
+/* Modal */
 
 const modalOverlay = document.getElementById("modalOverlay");
 
@@ -30,21 +46,19 @@ const taskDurationInput = document.getElementById("taskDuration");
 
 const taskEmojiInput = document.getElementById("taskEmoji");
 
-/* =========================
-   SOUND + EFFECTS
-========================= */
+/* Sounds */
 
 const completeSound = document.getElementById("completeSound");
 
 const successSound = document.getElementById("successSound");
 
+/* Effects */
+
 const xpPopup = document.getElementById("xp-popup");
 
 const confettiContainer = document.getElementById("confetti-container");
 
-/* =========================
-   TIMER ELEMENTS
-========================= */
+/* Timer */
 
 const timerCircle = document.querySelector(".timer-circle");
 
@@ -60,9 +74,13 @@ let tasks = JSON.parse(localStorage.getItem("momentumTasks")) || [];
 
 let xp = Number(localStorage.getItem("momentumXP")) || 0;
 
-/* =========================
-   TIMER DATA
-========================= */
+let streak = Number(localStorage.getItem("momentumStreak")) || 1;
+
+let lastVisit = localStorage.getItem("momentumLastVisit");
+
+let focusSessions = Number(localStorage.getItem("momentumFocus")) || 0;
+
+/* Timer */
 
 let timer;
 
@@ -70,8 +88,24 @@ let totalSeconds = 1500;
 
 let isRunning = false;
 
+/* Quotes */
+
+const quotes = [
+  "Small progress is still progress.",
+
+  "Momentum beats motivation.",
+
+  "Dream big. Start small.",
+
+  "Discipline creates freedom.",
+
+  "Stay patient and trust the process.",
+
+  "Success is built daily.",
+];
+
 /* =========================
-   LIVE CLOCK
+   CLOCK
 ========================= */
 
 function updateClock() {
@@ -82,24 +116,83 @@ function updateClock() {
     minute: "2-digit",
   });
 
-  const date = now.toLocaleDateString([], {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-  });
-
-  clock.innerHTML = `
-    ${time}
-    <p>${date}</p>
-  `;
+  clock.innerHTML = time;
 }
 
 setInterval(updateClock, 1000);
 
-updateClock();
+/* =========================
+   GREETING
+========================= */
+
+function updateGreeting() {
+  const hour = new Date().getHours();
+
+  if (hour < 12) {
+    greeting.innerText = "Good Morning ☀️";
+  } else if (hour < 18) {
+    greeting.innerText = "Good Afternoon 🌤️";
+  } else {
+    greeting.innerText = "Good Evening 🌙";
+  }
+}
 
 /* =========================
-   RENDER TASKS
+   QUOTE
+========================= */
+
+function updateQuote() {
+  const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+
+  quote.innerText = `"${randomQuote}"`;
+}
+
+/* =========================
+   STREAK
+========================= */
+
+function updateStreak() {
+  const today = new Date().toDateString();
+
+  if (!lastVisit) {
+    localStorage.setItem("momentumLastVisit", today);
+
+    return;
+  }
+
+  const previousDate = new Date(lastVisit);
+
+  const currentDate = new Date(today);
+
+  const difference = Math.floor(
+    (currentDate - previousDate) / (1000 * 60 * 60 * 24),
+  );
+
+  if (difference === 1) {
+    streak++;
+  } else if (difference > 1) {
+    streak = 1;
+  }
+
+  localStorage.setItem("momentumStreak", streak);
+
+  localStorage.setItem("momentumLastVisit", today);
+
+  streakElement.innerHTML = `🔥 ${streak} Day Streak`;
+}
+
+/* =========================
+   LEVEL
+========================= */
+
+function updateLevel() {
+  const level = Math.floor(xp / 100) + 1;
+
+  levelText.innerHTML = `⭐ Level ${level} • XP ${xp}`;
+}
+
+/* =========================
+   TASKS
 ========================= */
 
 function renderTasks() {
@@ -112,6 +205,8 @@ function renderTasks() {
       </div>
     `;
 
+    updateStats();
+
     updateProgress();
 
     return;
@@ -121,10 +216,6 @@ function renderTasks() {
     const taskDiv = document.createElement("div");
 
     taskDiv.classList.add("task-item");
-
-    if (task.completed) {
-      taskDiv.style.opacity = "0.6";
-    }
 
     taskDiv.innerHTML = `
       <div>
@@ -156,36 +247,32 @@ function renderTasks() {
       </div>
     `;
 
+    if (task.completed) {
+      taskDiv.style.opacity = "0.6";
+    }
+
     taskList.appendChild(taskDiv);
   });
 
   updateProgress();
-}
 
-/* =========================
-   ADD TASK
-========================= */
+  updateStats();
+}
 
 function addTask() {
   const taskName = taskNameInput.value.trim();
-
-  const taskTime = taskTimeInput.value;
-
-  const taskDuration = taskDurationInput.value.trim();
-
-  const taskEmoji = taskEmojiInput.value;
 
   if (!taskName) return;
 
   tasks.push({
     name: taskName,
-    time: taskTime || "Anytime",
-    duration: taskDuration || "30 min",
-    emoji: taskEmoji,
+    time: taskTimeInput.value || "Anytime",
+    duration: taskDurationInput.value || "30 min",
+    emoji: taskEmojiInput.value,
     completed: false,
   });
 
-  saveTasks();
+  saveData();
 
   renderTasks();
 
@@ -194,38 +281,30 @@ function addTask() {
   clearModalInputs();
 }
 
-/* =========================
-   COMPLETE TASK
-========================= */
-
 function completeTask(index) {
   if (!tasks[index].completed) {
     tasks[index].completed = true;
 
     xp += 15;
 
-    levelText.innerHTML = `⭐ XP ${xp}`;
-
     completeSound.play();
 
-    showXPPopup();
-
     launchConfetti();
+
+    showXPPopup();
   }
 
-  saveTasks();
+  saveData();
 
   renderTasks();
-}
 
-/* =========================
-   DELETE TASK
-========================= */
+  updateLevel();
+}
 
 function deleteTask(index) {
   tasks.splice(index, 1);
 
-  saveTasks();
+  saveData();
 
   renderTasks();
 }
@@ -244,17 +323,38 @@ function updateProgress() {
 }
 
 /* =========================
-   SAVE TASKS
+   STATS
 ========================= */
 
-function saveTasks() {
-  localStorage.setItem("momentumTasks", JSON.stringify(tasks));
+function updateStats() {
+  const completed = tasks.filter((task) => task.completed).length;
 
-  localStorage.setItem("momentumXP", xp);
+  totalTasksElement.innerText = tasks.length;
+
+  completedTasksElement.innerText = completed;
+
+  focusSessionsElement.innerText = focusSessions;
+
+  const productivity =
+    tasks.length === 0 ? 0 : Math.floor((completed / tasks.length) * 100);
+
+  productivityScoreElement.innerText = `${productivity}%`;
 }
 
 /* =========================
-   MODAL FUNCTIONS
+   STORAGE
+========================= */
+
+function saveData() {
+  localStorage.setItem("momentumTasks", JSON.stringify(tasks));
+
+  localStorage.setItem("momentumXP", xp);
+
+  localStorage.setItem("momentumFocus", focusSessions);
+}
+
+/* =========================
+   MODAL
 ========================= */
 
 function openTaskModal() {
@@ -313,7 +413,7 @@ function launchConfetti() {
 }
 
 /* =========================
-   TIMER FUNCTIONS
+   TIMER
 ========================= */
 
 function updateTimerDisplay() {
@@ -355,23 +455,27 @@ function startTimer() {
 
       totalSeconds = 1500;
 
-      updateTimerDisplay();
+      focusSessions++;
 
-      startTimerBtn.innerText = "Start";
-
-      timerCircle.classList.remove("timer-active");
+      xp += 25;
 
       successSound.play();
 
       launchConfetti();
 
-      xp += 25;
-
-      levelText.innerHTML = `⭐ XP ${xp}`;
-
       showXPPopup();
 
-      saveTasks();
+      updateLevel();
+
+      updateStats();
+
+      saveData();
+
+      updateTimerDisplay();
+
+      startTimerBtn.innerText = "Start";
+
+      timerCircle.classList.remove("timer-active");
 
       alert("Focus session completed 🚀");
     }
@@ -393,8 +497,18 @@ function resetTimer() {
 }
 
 /* =========================
+   THEME
+========================= */
+
+function toggleTheme() {
+  document.body.classList.toggle("dark-mode");
+}
+
+/* =========================
    EVENT LISTENERS
 ========================= */
+
+themeToggle.addEventListener("click", toggleTheme);
 
 openModal.addEventListener("click", openTaskModal);
 
@@ -410,8 +524,18 @@ resetTimerBtn.addEventListener("click", resetTimer);
    INITIALIZE
 ========================= */
 
-renderTasks();
+updateClock();
+
+updateGreeting();
+
+updateQuote();
+
+updateStreak();
+
+updateLevel();
 
 updateTimerDisplay();
 
-levelText.innerHTML = `⭐ XP ${xp}`;
+renderTasks();
+
+updateStats();

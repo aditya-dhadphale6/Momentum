@@ -1,294 +1,206 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
 
-<head>
-  <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  />
+    <title>Momentum</title>
 
-  <title>Momentum</title>
+    <link rel="stylesheet" href="css/style.css" />
 
-  <link
-    rel="stylesheet"
-    href="css/style.css"
-  />
+    <link rel="stylesheet" href="css/sidebar.css" />
 
-  <link
-    rel="preconnect"
-    href="https://fonts.googleapis.com"
-  />
+    <link rel="stylesheet" href="css/dashboard.css" />
 
-  <link
-    rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin
-  />
+    <link rel="stylesheet" href="css/theme.css" />
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap"
-    rel="stylesheet"
-  />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
 
-</head>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-<body>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-  <!-- Background Blobs -->
+  <body>
+    <!-- Sidebar -->
 
-  <div class="blob blob1"></div>
-  <div class="blob blob2"></div>
+    <aside class="sidebar">
+      <div class="sidebar-logo">Momentum 🚀</div>
 
-  <!-- Navbar -->
+      <nav class="sidebar-nav">
+        <a href="#"> 🏠 Dashboard </a>
 
-  <nav class="navbar">
+        <a href="#"> ✅ Tasks </a>
 
-    <div class="logo">
-      Momentum 🚀
-    </div>
+        <a href="#"> ⏳ Focus </a>
 
-    <div class="nav-right">
+        <a href="#"> 📈 Analytics </a>
 
-      <div class="streak">
-        🔥 12 Day Streak
-      </div>
+        <a href="#"> ⚙ Settings </a>
+      </nav>
 
-      <div class="level">
-        ⭐ XP 0
-      </div>
+      <button id="themeToggle">🌙 Dark Mode</button>
+    </aside>
 
-    </div>
+    <!-- Main Content -->
 
-  </nav>
+    <div class="main-content">
+      <!-- Topbar -->
 
-  <!-- Hero -->
+      <header class="topbar">
+        <div>
+          <h1 id="greeting">Good Evening 🌙</h1>
 
-  <section class="hero">
-
-    <div class="hero-text">
-
-      <h1>
-        Build Momentum Every Day.
-      </h1>
-
-      <p>
-        Turn productivity into a fun daily adventure.
-      </p>
-
-    </div>
-
-  </section>
-
-  <!-- Dashboard -->
-
-  <main class="dashboard">
-
-    <!-- Left Panel -->
-
-    <section class="left-panel">
-
-      <!-- Progress -->
-
-      <div class="card progress-card">
-
-        <h2>
-          Today's Progress
-        </h2>
-
-        <div class="progress-circle">
-          0%
+          <p>Let's build momentum today.</p>
         </div>
 
-        <p>
-          You're doing amazing today ✨
-        </p>
+        <div class="topbar-right">
+          <div class="streak">🔥 1 Day Streak</div>
 
+          <div class="level">⭐ Level 1 • XP 0</div>
+        </div>
+      </header>
+
+      <!-- Quote -->
+
+      <div class="quote-card">
+        <p id="quote">"Small progress is still progress."</p>
       </div>
 
-      <!-- Tasks -->
+      <!-- Stats -->
 
-      <div class="card task-card">
+      <section class="stats-grid">
+        <div class="stat-card">
+          <h3>Total Tasks</h3>
 
-        <div class="task-header">
-
-          <h2>
-            Today's Tasks
-          </h2>
-
-          <button
-            class="add-btn"
-            id="openModal"
-          >
-            + Add Task
-          </button>
-
+          <h2 id="totalTasks">0</h2>
         </div>
 
-        <div class="task-list">
+        <div class="stat-card">
+          <h3>Completed</h3>
 
-          <div class="empty-state">
-            No tasks yet 🚀
+          <h2 id="completedTasks">0</h2>
+        </div>
+
+        <div class="stat-card">
+          <h3>Focus Sessions</h3>
+
+          <h2 id="focusSessions">0</h2>
+        </div>
+
+        <div class="stat-card">
+          <h3>Productivity</h3>
+
+          <h2 id="productivityScore">0%</h2>
+        </div>
+      </section>
+
+      <!-- Dashboard -->
+
+      <main class="dashboard">
+        <!-- Left Panel -->
+
+        <section class="left-panel">
+          <!-- Progress -->
+
+          <div class="card progress-card">
+            <h2>Today's Progress</h2>
+
+            <div class="progress-circle">0%</div>
+
+            <p>Keep pushing forward ✨</p>
           </div>
 
-        </div>
+          <!-- Tasks -->
 
-      </div>
+          <div class="card task-card">
+            <div class="task-header">
+              <h2>Today's Tasks</h2>
 
-    </section>
+              <button class="add-btn" id="openModal">+ Add Task</button>
+            </div>
 
-    <!-- Right Panel -->
+            <div class="task-list">
+              <div class="empty-state">No tasks yet 🚀</div>
+            </div>
+          </div>
+        </section>
 
-    <section class="right-panel">
+        <!-- Right Panel -->
 
-      <!-- Clock -->
+        <section class="right-panel">
+          <!-- Clock -->
 
-      <div class="card clock-card">
+          <div class="card clock-card">
+            <h2>Current Time</h2>
 
-        <h2>
-          Current Time
-        </h2>
+            <h1 id="clock">08:45 PM</h1>
+          </div>
 
-        <h1 id="clock">
-          08:45 PM
-        </h1>
+          <!-- Timer -->
 
-      </div>
+          <div class="card timer-card">
+            <h2>Focus Timer</h2>
 
-      <!-- Timer -->
+            <div class="timer-circle">25:00</div>
 
-      <div class="card timer-card">
+            <div class="timer-buttons">
+              <button id="startTimerBtn">Start</button>
 
-        <h2>
-          Focus Timer
-        </h2>
-
-        <div class="timer-circle">
-          25:00
-        </div>
-
-        <div class="timer-buttons">
-
-          <button id="startTimerBtn">
-            Start
-          </button>
-
-          <button id="resetTimerBtn">
-            Reset
-          </button>
-
-        </div>
-
-      </div>
-
-      <!-- Streak -->
-
-      <div class="card streak-card">
-
-        <h2>
-          Weekly Streak
-        </h2>
-
-        <div class="days">
-
-          <span>✔</span>
-          <span>✔</span>
-          <span>✔</span>
-          <span>✔</span>
-          <span>○</span>
-          <span>○</span>
-          <span>○</span>
-
-        </div>
-
-      </div>
-
-    </section>
-
-  </main>
-
-  <!-- Task Modal -->
-
-  <div
-    class="modal-overlay"
-    id="modalOverlay"
-  >
-
-    <div class="task-modal">
-
-      <h2>
-        Create New Task 🚀
-      </h2>
-
-      <input
-        type="text"
-        id="taskName"
-        placeholder="Task name"
-      />
-
-      <input
-        type="time"
-        id="taskTime"
-      />
-
-      <input
-        type="text"
-        id="taskDuration"
-        placeholder="Duration (ex: 1 hr)"
-      />
-
-      <select id="taskEmoji">
-
-        <option>📚</option>
-        <option>💻</option>
-        <option>🔥</option>
-        <option>🎯</option>
-        <option>🚀</option>
-        <option>🧠</option>
-
-      </select>
-
-      <div class="modal-buttons">
-
-        <button id="createTaskBtn">
-          Create Task
-        </button>
-
-        <button id="closeModalBtn">
-          Cancel
-        </button>
-
-      </div>
-
+              <button id="resetTimerBtn">Reset</button>
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
 
-  </div>
+    <!-- Modal -->
 
-  <!-- Sounds -->
+    <div class="modal-overlay" id="modalOverlay">
+      <div class="task-modal">
+        <h2>Create New Task 🚀</h2>
 
-  <audio
-    id="completeSound"
-    src="assets/sounds/complete.mp3"
-  ></audio>
+        <input type="text" id="taskName" placeholder="Task name" />
 
-  <audio
-    id="successSound"
-    src="assets/sounds/success.mp3"
-  ></audio>
+        <input type="time" id="taskTime" />
 
-  <!-- XP Popup -->
+        <input type="text" id="taskDuration" placeholder="Duration" />
 
-  <div id="xp-popup">
-    +15 XP ✨
-  </div>
+        <select id="taskEmoji">
+          <option>📚</option>
+          <option>💻</option>
+          <option>🔥</option>
+          <option>🎯</option>
+          <option>🚀</option>
+          <option>🧠</option>
+        </select>
 
-  <!-- Confetti -->
+        <div class="modal-buttons">
+          <button id="createTaskBtn">Create Task</button>
 
-  <div id="confetti-container"></div>
+          <button id="closeModalBtn">Cancel</button>
+        </div>
+      </div>
+    </div>
 
-  <script src="js/app.js"></script>
+    <!-- Sounds -->
 
-</body>
+    <audio id="completeSound" src="assets/sounds/complete.mp3"></audio>
 
+    <audio id="successSound" src="assets/sounds/success.mp3"></audio>
+
+    <!-- XP Popup -->
+
+    <div id="xp-popup">+15 XP ✨</div>
+
+    <!-- Confetti -->
+
+    <div id="confetti-container"></div>
+
+    <script src="js/app.js"></script>
+  </body>
 </html>
