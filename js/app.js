@@ -1,57 +1,100 @@
-const clock = document.getElementById("clock");
+/* =========================
+   ELEMENTS
+========================= */
 
-const taskList = document.querySelector(".task-list");
+const clock =
+  document.getElementById("clock");
 
-const progressCircle = document.querySelector(".progress-circle");
+const taskList =
+  document.querySelector(".task-list");
 
-const levelText = document.querySelector(".level");
+const progressCircle =
+  document.querySelector(".progress-circle");
 
-/* Modal */
+const levelText =
+  document.querySelector(".level");
 
-const modalOverlay = document.getElementById("modalOverlay");
+/* =========================
+   MODAL ELEMENTS
+========================= */
 
-const openModal = document.getElementById("openModal");
+const modalOverlay =
+  document.getElementById("modalOverlay");
 
-const closeModalBtn = document.getElementById("closeModalBtn");
+const openModal =
+  document.getElementById("openModal");
 
-const createTaskBtn = document.getElementById("createTaskBtn");
+const closeModalBtn =
+  document.getElementById("closeModalBtn");
 
-const taskNameInput = document.getElementById("taskName");
+const createTaskBtn =
+  document.getElementById("createTaskBtn");
 
-const taskTimeInput = document.getElementById("taskTime");
+const taskNameInput =
+  document.getElementById("taskName");
 
-const taskDurationInput = document.getElementById("taskDuration");
+const taskTimeInput =
+  document.getElementById("taskTime");
 
-const taskEmojiInput = document.getElementById("taskEmoji");
+const taskDurationInput =
+  document.getElementById("taskDuration");
 
-/* Data */
+const taskEmojiInput =
+  document.getElementById("taskEmoji");
 
-let tasks = JSON.parse(localStorage.getItem("momentumTasks")) || [];
+/* =========================
+   SOUND + EFFECTS
+========================= */
 
-let xp = Number(localStorage.getItem("momentumXP")) || 0;
+const completeSound =
+  document.getElementById("completeSound");
+
+const xpPopup =
+  document.getElementById("xp-popup");
+
+const confettiContainer =
+  document.getElementById("confetti-container");
+
+/* =========================
+   DATA
+========================= */
+
+let tasks =
+  JSON.parse(
+    localStorage.getItem("momentumTasks")
+  ) || [];
+
+let xp =
+  Number(
+    localStorage.getItem("momentumXP")
+  ) || 0;
 
 /* =========================
    LIVE CLOCK
 ========================= */
 
 function updateClock() {
+
   const now = new Date();
 
-  const time = now.toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  const time =
+    now.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit"
+    });
 
-  const date = now.toLocaleDateString([], {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-  });
+  const date =
+    now.toLocaleDateString([], {
+      weekday: "long",
+      day: "numeric",
+      month: "long"
+    });
 
   clock.innerHTML = `
     ${time}
     <p>${date}</p>
   `;
+
 }
 
 setInterval(updateClock, 1000);
@@ -63,9 +106,11 @@ updateClock();
 ========================= */
 
 function renderTasks() {
+
   taskList.innerHTML = "";
 
   if (tasks.length === 0) {
+
     taskList.innerHTML = `
       <div class="empty-state">
         No tasks yet 🚀
@@ -75,10 +120,13 @@ function renderTasks() {
     updateProgress();
 
     return;
+
   }
 
   tasks.forEach((task, index) => {
-    const taskDiv = document.createElement("div");
+
+    const taskDiv =
+      document.createElement("div");
 
     taskDiv.classList.add("task-item");
 
@@ -117,9 +165,11 @@ function renderTasks() {
     `;
 
     taskList.appendChild(taskDiv);
+
   });
 
   updateProgress();
+
 }
 
 /* =========================
@@ -127,13 +177,18 @@ function renderTasks() {
 ========================= */
 
 function addTask() {
-  const taskName = taskNameInput.value.trim();
 
-  const taskTime = taskTimeInput.value;
+  const taskName =
+    taskNameInput.value.trim();
 
-  const taskDuration = taskDurationInput.value.trim();
+  const taskTime =
+    taskTimeInput.value;
 
-  const taskEmoji = taskEmojiInput.value;
+  const taskDuration =
+    taskDurationInput.value.trim();
+
+  const taskEmoji =
+    taskEmojiInput.value;
 
   if (!taskName) return;
 
@@ -142,7 +197,7 @@ function addTask() {
     time: taskTime || "Anytime",
     duration: taskDuration || "30 min",
     emoji: taskEmoji,
-    completed: false,
+    completed: false
   });
 
   saveTasks();
@@ -152,6 +207,7 @@ function addTask() {
   closeModal();
 
   clearModalInputs();
+
 }
 
 /* =========================
@@ -159,17 +215,28 @@ function addTask() {
 ========================= */
 
 function completeTask(index) {
+
   if (!tasks[index].completed) {
+
     tasks[index].completed = true;
 
     xp += 15;
 
-    levelText.innerHTML = `⭐ XP ${xp}`;
+    levelText.innerHTML =
+      `⭐ XP ${xp}`;
+
+    completeSound.play();
+
+    showXPPopup();
+
+    launchConfetti();
+
   }
 
   saveTasks();
 
   renderTasks();
+
 }
 
 /* =========================
@@ -177,11 +244,13 @@ function completeTask(index) {
 ========================= */
 
 function deleteTask(index) {
+
   tasks.splice(index, 1);
 
   saveTasks();
 
   renderTasks();
+
 }
 
 /* =========================
@@ -189,12 +258,22 @@ function deleteTask(index) {
 ========================= */
 
 function updateProgress() {
-  const completed = tasks.filter((task) => task.completed).length;
+
+  const completed =
+    tasks.filter(
+      task => task.completed
+    ).length;
 
   const progress =
-    tasks.length === 0 ? 0 : Math.floor((completed / tasks.length) * 100);
+    tasks.length === 0
+      ? 0
+      : Math.floor(
+          (completed / tasks.length) * 100
+        );
 
-  progressCircle.innerText = `${progress}%`;
+  progressCircle.innerText =
+    `${progress}%`;
+
 }
 
 /* =========================
@@ -202,40 +281,125 @@ function updateProgress() {
 ========================= */
 
 function saveTasks() {
-  localStorage.setItem("momentumTasks", JSON.stringify(tasks));
 
-  localStorage.setItem("momentumXP", xp);
+  localStorage.setItem(
+    "momentumTasks",
+    JSON.stringify(tasks)
+  );
+
+  localStorage.setItem(
+    "momentumXP",
+    xp
+  );
+
 }
 
 /* =========================
-   MODAL
+   MODAL FUNCTIONS
 ========================= */
 
 function openTaskModal() {
+
   modalOverlay.classList.add("active");
+
 }
 
 function closeModal() {
+
   modalOverlay.classList.remove("active");
+
 }
 
 function clearModalInputs() {
+
   taskNameInput.value = "";
 
   taskTimeInput.value = "";
 
   taskDurationInput.value = "";
+
+}
+
+/* =========================
+   XP POPUP
+========================= */
+
+function showXPPopup() {
+
+  xpPopup.classList.add("show");
+
+  setTimeout(() => {
+
+    xpPopup.classList.remove("show");
+
+  }, 2000);
+
+}
+
+/* =========================
+   CONFETTI
+========================= */
+
+function launchConfetti() {
+
+  const colors = [
+    "#58cc02",
+    "#ffd93d",
+    "#ff6b6b",
+    "#4d96ff",
+    "#ffffff"
+  ];
+
+  for (let i = 0; i < 40; i++) {
+
+    const confetti =
+      document.createElement("div");
+
+    confetti.classList.add("confetti");
+
+    confetti.style.left =
+      Math.random() * window.innerWidth + "px";
+
+    confetti.style.background =
+      colors[
+        Math.floor(
+          Math.random() * colors.length
+        )
+      ];
+
+    confetti.style.animationDuration =
+      Math.random() * 2 + 2 + "s";
+
+    confettiContainer.appendChild(confetti);
+
+    setTimeout(() => {
+
+      confetti.remove();
+
+    }, 3000);
+
+  }
+
 }
 
 /* =========================
    EVENT LISTENERS
 ========================= */
 
-openModal.addEventListener("click", openTaskModal);
+openModal.addEventListener(
+  "click",
+  openTaskModal
+);
 
-closeModalBtn.addEventListener("click", closeModal);
+closeModalBtn.addEventListener(
+  "click",
+  closeModal
+);
 
-createTaskBtn.addEventListener("click", addTask);
+createTaskBtn.addEventListener(
+  "click",
+  addTask
+);
 
 /* =========================
    INITIALIZE
@@ -243,4 +407,5 @@ createTaskBtn.addEventListener("click", addTask);
 
 renderTasks();
 
-levelText.innerHTML = `⭐ XP ${xp}`;
+levelText.innerHTML =
+  `⭐ XP ${xp}`;
