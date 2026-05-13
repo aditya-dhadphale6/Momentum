@@ -1,168 +1,294 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Momentum</title>
+<head>
+  <meta charset="UTF-8" />
 
-    <link rel="stylesheet" href="css/style.css" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <title>Momentum</title>
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-  </head>
+  <link
+    rel="stylesheet"
+    href="css/style.css"
+  />
 
-  <body>
-    <!-- Background Blobs -->
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  />
 
-    <div class="blob blob1"></div>
-    <div class="blob blob2"></div>
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  />
 
-    <!-- Navbar -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap"
+    rel="stylesheet"
+  />
 
-    <nav class="navbar">
-      <div class="logo">Momentum 🚀</div>
+</head>
 
-      <div class="nav-right">
-        <div class="streak">🔥 12 Day Streak</div>
+<body>
 
-        <div class="level">⭐ XP 0</div>
+  <!-- Background Blobs -->
+
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+
+  <!-- Navbar -->
+
+  <nav class="navbar">
+
+    <div class="logo">
+      Momentum 🚀
+    </div>
+
+    <div class="nav-right">
+
+      <div class="streak">
+        🔥 12 Day Streak
       </div>
-    </nav>
 
-    <!-- Hero -->
-
-    <section class="hero">
-      <div class="hero-text">
-        <h1>Build Momentum Every Day.</h1>
-
-        <p>Turn productivity into a fun daily adventure.</p>
+      <div class="level">
+        ⭐ XP 0
       </div>
+
+    </div>
+
+  </nav>
+
+  <!-- Hero -->
+
+  <section class="hero">
+
+    <div class="hero-text">
+
+      <h1>
+        Build Momentum Every Day.
+      </h1>
+
+      <p>
+        Turn productivity into a fun daily adventure.
+      </p>
+
+    </div>
+
+  </section>
+
+  <!-- Dashboard -->
+
+  <main class="dashboard">
+
+    <!-- Left Panel -->
+
+    <section class="left-panel">
+
+      <!-- Progress -->
+
+      <div class="card progress-card">
+
+        <h2>
+          Today's Progress
+        </h2>
+
+        <div class="progress-circle">
+          0%
+        </div>
+
+        <p>
+          You're doing amazing today ✨
+        </p>
+
+      </div>
+
+      <!-- Tasks -->
+
+      <div class="card task-card">
+
+        <div class="task-header">
+
+          <h2>
+            Today's Tasks
+          </h2>
+
+          <button
+            class="add-btn"
+            id="openModal"
+          >
+            + Add Task
+          </button>
+
+        </div>
+
+        <div class="task-list">
+
+          <div class="empty-state">
+            No tasks yet 🚀
+          </div>
+
+        </div>
+
+      </div>
+
     </section>
 
-    <!-- Dashboard -->
+    <!-- Right Panel -->
 
-    <main class="dashboard">
-      <!-- Left Panel -->
+    <section class="right-panel">
 
-      <section class="left-panel">
-        <!-- Progress -->
+      <!-- Clock -->
 
-        <div class="card progress-card">
-          <h2>Today's Progress</h2>
+      <div class="card clock-card">
 
-          <div class="progress-circle">0%</div>
+        <h2>
+          Current Time
+        </h2>
 
-          <p>You're doing amazing today ✨</p>
-        </div>
+        <h1 id="clock">
+          08:45 PM
+        </h1>
 
-        <!-- Tasks -->
-
-        <div class="card task-card">
-          <div class="task-header">
-            <h2>Today's Tasks</h2>
-
-            <button class="add-btn" id="openModal">+ Add Task</button>
-          </div>
-
-          <div class="task-list">
-            <div class="empty-state">No tasks yet 🚀</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Right Panel -->
-
-      <section class="right-panel">
-        <!-- Clock -->
-
-        <div class="card clock-card">
-          <h2>Current Time</h2>
-
-          <h1 id="clock">08:45 PM</h1>
-        </div>
-
-        <!-- Timer -->
-
-        <div class="card timer-card">
-          <h2>Focus Timer</h2>
-
-          <div class="timer-circle">25:00</div>
-
-          <div class="timer-buttons">
-            <button>Start</button>
-
-            <button>Reset</button>
-          </div>
-        </div>
-
-        <!-- Streak -->
-
-        <div class="card streak-card">
-          <h2>Weekly Streak</h2>
-
-          <div class="days">
-            <span>✔</span>
-            <span>✔</span>
-            <span>✔</span>
-            <span>✔</span>
-            <span>○</span>
-            <span>○</span>
-            <span>○</span>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <!-- Task Modal -->
-
-    <div class="modal-overlay" id="modalOverlay">
-      <div class="task-modal">
-        <h2>Create New Task 🚀</h2>
-
-        <input type="text" id="taskName" placeholder="Task name" />
-
-        <input type="time" id="taskTime" />
-
-        <input
-          type="text"
-          id="taskDuration"
-          placeholder="Duration (ex: 1 hr)"
-        />
-
-        <select id="taskEmoji">
-          <option>📚</option>
-          <option>💻</option>
-          <option>🔥</option>
-          <option>🎯</option>
-          <option>🚀</option>
-          <option>🧠</option>
-        </select>
-
-        <div class="modal-buttons">
-          <button id="createTaskBtn">Create Task</button>
-
-          <button id="closeModalBtn">Cancel</button>
-        </div>
       </div>
+
+      <!-- Timer -->
+
+      <div class="card timer-card">
+
+        <h2>
+          Focus Timer
+        </h2>
+
+        <div class="timer-circle">
+          25:00
+        </div>
+
+        <div class="timer-buttons">
+
+          <button id="startTimerBtn">
+            Start
+          </button>
+
+          <button id="resetTimerBtn">
+            Reset
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- Streak -->
+
+      <div class="card streak-card">
+
+        <h2>
+          Weekly Streak
+        </h2>
+
+        <div class="days">
+
+          <span>✔</span>
+          <span>✔</span>
+          <span>✔</span>
+          <span>✔</span>
+          <span>○</span>
+          <span>○</span>
+          <span>○</span>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Task Modal -->
+
+  <div
+    class="modal-overlay"
+    id="modalOverlay"
+  >
+
+    <div class="task-modal">
+
+      <h2>
+        Create New Task 🚀
+      </h2>
+
+      <input
+        type="text"
+        id="taskName"
+        placeholder="Task name"
+      />
+
+      <input
+        type="time"
+        id="taskTime"
+      />
+
+      <input
+        type="text"
+        id="taskDuration"
+        placeholder="Duration (ex: 1 hr)"
+      />
+
+      <select id="taskEmoji">
+
+        <option>📚</option>
+        <option>💻</option>
+        <option>🔥</option>
+        <option>🎯</option>
+        <option>🚀</option>
+        <option>🧠</option>
+
+      </select>
+
+      <div class="modal-buttons">
+
+        <button id="createTaskBtn">
+          Create Task
+        </button>
+
+        <button id="closeModalBtn">
+          Cancel
+        </button>
+
+      </div>
+
     </div>
-    <!-- Completion Sound -->
 
-    <audio id="completeSound" src="assets/sounds/complete.mp3"></audio>
+  </div>
 
-    <!-- XP Popup -->
+  <!-- Sounds -->
 
-    <div id="xp-popup">+15 XP ✨</div>
+  <audio
+    id="completeSound"
+    src="assets/sounds/complete.mp3"
+  ></audio>
 
-    <!-- Confetti Container -->
+  <audio
+    id="successSound"
+    src="assets/sounds/success.mp3"
+  ></audio>
 
-    <div id="confetti-container"></div>
+  <!-- XP Popup -->
 
-    <script src="js/app.js"></script>
-  </body>
+  <div id="xp-popup">
+    +15 XP ✨
+  </div>
+
+  <!-- Confetti -->
+
+  <div id="confetti-container"></div>
+
+  <script src="js/app.js"></script>
+
+</body>
+
 </html>

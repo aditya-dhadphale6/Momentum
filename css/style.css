@@ -22,6 +22,7 @@ body {
 
 .blob {
   position: absolute;
+
   border-radius: 50%;
 
   filter: blur(80px);
@@ -63,6 +64,7 @@ body {
   align-items: center;
 
   position: relative;
+
   z-index: 2;
 }
 
@@ -100,6 +102,7 @@ body {
   padding: 20px 60px 40px;
 
   position: relative;
+
   z-index: 2;
 }
 
@@ -134,15 +137,15 @@ body {
   padding: 0 60px 60px;
 
   position: relative;
+
   z-index: 2;
 }
-
-/* Panels */
 
 .left-panel,
 .right-panel {
   display: flex;
   flex-direction: column;
+
   gap: 24px;
 }
 
@@ -176,6 +179,7 @@ body {
 
 .progress-card h2 {
   font-size: 26px;
+
   margin-bottom: 24px;
 }
 
@@ -245,6 +249,7 @@ body {
 .task-list {
   display: flex;
   flex-direction: column;
+
   gap: 18px;
 }
 
@@ -268,21 +273,25 @@ body {
 
 .task-item h3 {
   font-size: 20px;
+
   margin-bottom: 6px;
 }
 
 .task-item p {
   color: #4b5563;
+
   font-weight: 600;
 }
 
 .task-actions {
   display: flex;
+
   gap: 10px;
 }
 
 .complete-btn {
   background: #58cc02;
+
   color: white;
 
   border: none;
@@ -304,6 +313,7 @@ body {
 
 .delete-btn {
   background: #ff5a5f;
+
   color: white;
 
   border: none;
@@ -338,6 +348,7 @@ body {
 
 .clock-card h1 {
   font-size: 54px;
+
   margin: 18px 0;
 }
 
@@ -373,11 +384,14 @@ body {
   font-weight: 800;
 
   color: #58cc02;
+
+  transition: 0.3s;
 }
 
 .timer-buttons {
   display: flex;
   justify-content: center;
+
   gap: 14px;
 }
 
@@ -432,6 +446,7 @@ body {
 
 .modal-overlay {
   position: fixed;
+
   inset: 0;
 
   background: rgba(0, 0, 0, 0.4);
@@ -465,6 +480,7 @@ body {
 
   display: flex;
   flex-direction: column;
+
   gap: 18px;
 
   transform: scale(0.8);
@@ -480,8 +496,6 @@ body {
   text-align: center;
 
   margin-bottom: 10px;
-
-  color: #1f2937;
 }
 
 .task-modal input,
@@ -508,6 +522,7 @@ body {
 
 .modal-buttons {
   display: flex;
+
   gap: 12px;
 }
 
@@ -544,6 +559,90 @@ body {
   background: #e5e7eb;
 }
 
+/* XP Popup */
+
+#xp-popup {
+  position: fixed;
+
+  top: 40px;
+  right: 40px;
+
+  background: white;
+
+  color: #58cc02;
+
+  padding: 18px 24px;
+
+  border-radius: 20px;
+
+  font-size: 20px;
+  font-weight: 800;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+
+  opacity: 0;
+
+  transform: translateY(-20px);
+
+  transition: 0.4s ease;
+
+  z-index: 999;
+}
+
+#xp-popup.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Confetti */
+
+.confetti {
+  position: fixed;
+
+  width: 12px;
+  height: 12px;
+
+  border-radius: 50%;
+
+  top: -20px;
+
+  animation: fall 3s linear forwards;
+
+  z-index: 999;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(100vh) rotate(720deg);
+
+    opacity: 0;
+  }
+}
+
+/* Timer Animation */
+
+.timer-active {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.03);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
 /* Responsive */
 
 @media (max-width: 1000px) {
@@ -575,7 +674,9 @@ body {
 
   .task-item {
     flex-direction: column;
+
     gap: 16px;
+
     align-items: flex-start;
   }
 
@@ -586,100 +687,4 @@ body {
   .task-actions button {
     flex: 1;
   }
-}
-/* =========================
-   XP POPUP
-========================= */
-
-#xp-popup {
-  position: fixed;
-
-  top: 40px;
-  right: 40px;
-
-  background: white;
-  color: #58cc02;
-
-  padding: 18px 24px;
-
-  border-radius: 20px;
-
-  font-size: 20px;
-  font-weight: 800;
-
-  box-shadow:
-    0 10px 30px rgba(0,0,0,0.15);
-
-  opacity: 0;
-
-  transform: translateY(-20px);
-
-  transition: 0.4s ease;
-
-  z-index: 999;
-}
-
-#xp-popup.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* =========================
-   TASK COMPLETE EFFECT
-========================= */
-
-.task-completed {
-  animation: completeBounce 0.5s ease;
-}
-
-@keyframes completeBounce {
-
-  0% {
-    transform: scale(1);
-  }
-
-  50% {
-    transform: scale(1.04);
-  }
-
-  100% {
-    transform: scale(1);
-  }
-
-}
-
-/* =========================
-   CONFETTI
-========================= */
-
-.confetti {
-  position: fixed;
-
-  width: 12px;
-  height: 12px;
-
-  border-radius: 50%;
-
-  top: -20px;
-
-  animation: fall 3s linear forwards;
-
-  z-index: 999;
-}
-
-@keyframes fall {
-
-  to {
-    transform: translateY(100vh) rotate(720deg);
-    opacity: 0;
-  }
-
-}
-
-/* =========================
-   BUTTON FEEDBACK
-========================= */
-
-button:active {
-  transform: scale(0.95);
 }

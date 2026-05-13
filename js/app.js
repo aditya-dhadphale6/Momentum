@@ -2,99 +2,96 @@
    ELEMENTS
 ========================= */
 
-const clock =
-  document.getElementById("clock");
+const clock = document.getElementById("clock");
 
-const taskList =
-  document.querySelector(".task-list");
+const taskList = document.querySelector(".task-list");
 
-const progressCircle =
-  document.querySelector(".progress-circle");
+const progressCircle = document.querySelector(".progress-circle");
 
-const levelText =
-  document.querySelector(".level");
+const levelText = document.querySelector(".level");
 
 /* =========================
    MODAL ELEMENTS
 ========================= */
 
-const modalOverlay =
-  document.getElementById("modalOverlay");
+const modalOverlay = document.getElementById("modalOverlay");
 
-const openModal =
-  document.getElementById("openModal");
+const openModal = document.getElementById("openModal");
 
-const closeModalBtn =
-  document.getElementById("closeModalBtn");
+const closeModalBtn = document.getElementById("closeModalBtn");
 
-const createTaskBtn =
-  document.getElementById("createTaskBtn");
+const createTaskBtn = document.getElementById("createTaskBtn");
 
-const taskNameInput =
-  document.getElementById("taskName");
+const taskNameInput = document.getElementById("taskName");
 
-const taskTimeInput =
-  document.getElementById("taskTime");
+const taskTimeInput = document.getElementById("taskTime");
 
-const taskDurationInput =
-  document.getElementById("taskDuration");
+const taskDurationInput = document.getElementById("taskDuration");
 
-const taskEmojiInput =
-  document.getElementById("taskEmoji");
+const taskEmojiInput = document.getElementById("taskEmoji");
 
 /* =========================
    SOUND + EFFECTS
 ========================= */
 
-const completeSound =
-  document.getElementById("completeSound");
+const completeSound = document.getElementById("completeSound");
 
-const xpPopup =
-  document.getElementById("xp-popup");
+const successSound = document.getElementById("successSound");
 
-const confettiContainer =
-  document.getElementById("confetti-container");
+const xpPopup = document.getElementById("xp-popup");
+
+const confettiContainer = document.getElementById("confetti-container");
+
+/* =========================
+   TIMER ELEMENTS
+========================= */
+
+const timerCircle = document.querySelector(".timer-circle");
+
+const startTimerBtn = document.getElementById("startTimerBtn");
+
+const resetTimerBtn = document.getElementById("resetTimerBtn");
 
 /* =========================
    DATA
 ========================= */
 
-let tasks =
-  JSON.parse(
-    localStorage.getItem("momentumTasks")
-  ) || [];
+let tasks = JSON.parse(localStorage.getItem("momentumTasks")) || [];
 
-let xp =
-  Number(
-    localStorage.getItem("momentumXP")
-  ) || 0;
+let xp = Number(localStorage.getItem("momentumXP")) || 0;
+
+/* =========================
+   TIMER DATA
+========================= */
+
+let timer;
+
+let totalSeconds = 1500;
+
+let isRunning = false;
 
 /* =========================
    LIVE CLOCK
 ========================= */
 
 function updateClock() {
-
   const now = new Date();
 
-  const time =
-    now.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit"
-    });
+  const time = now.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
-  const date =
-    now.toLocaleDateString([], {
-      weekday: "long",
-      day: "numeric",
-      month: "long"
-    });
+  const date = now.toLocaleDateString([], {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  });
 
   clock.innerHTML = `
     ${time}
     <p>${date}</p>
   `;
-
 }
 
 setInterval(updateClock, 1000);
@@ -106,11 +103,9 @@ updateClock();
 ========================= */
 
 function renderTasks() {
-
   taskList.innerHTML = "";
 
   if (tasks.length === 0) {
-
     taskList.innerHTML = `
       <div class="empty-state">
         No tasks yet 🚀
@@ -120,13 +115,10 @@ function renderTasks() {
     updateProgress();
 
     return;
-
   }
 
   tasks.forEach((task, index) => {
-
-    const taskDiv =
-      document.createElement("div");
+    const taskDiv = document.createElement("div");
 
     taskDiv.classList.add("task-item");
 
@@ -165,11 +157,9 @@ function renderTasks() {
     `;
 
     taskList.appendChild(taskDiv);
-
   });
 
   updateProgress();
-
 }
 
 /* =========================
@@ -177,18 +167,13 @@ function renderTasks() {
 ========================= */
 
 function addTask() {
+  const taskName = taskNameInput.value.trim();
 
-  const taskName =
-    taskNameInput.value.trim();
+  const taskTime = taskTimeInput.value;
 
-  const taskTime =
-    taskTimeInput.value;
+  const taskDuration = taskDurationInput.value.trim();
 
-  const taskDuration =
-    taskDurationInput.value.trim();
-
-  const taskEmoji =
-    taskEmojiInput.value;
+  const taskEmoji = taskEmojiInput.value;
 
   if (!taskName) return;
 
@@ -197,7 +182,7 @@ function addTask() {
     time: taskTime || "Anytime",
     duration: taskDuration || "30 min",
     emoji: taskEmoji,
-    completed: false
+    completed: false,
   });
 
   saveTasks();
@@ -207,7 +192,6 @@ function addTask() {
   closeModal();
 
   clearModalInputs();
-
 }
 
 /* =========================
@@ -215,28 +199,23 @@ function addTask() {
 ========================= */
 
 function completeTask(index) {
-
   if (!tasks[index].completed) {
-
     tasks[index].completed = true;
 
     xp += 15;
 
-    levelText.innerHTML =
-      `⭐ XP ${xp}`;
+    levelText.innerHTML = `⭐ XP ${xp}`;
 
     completeSound.play();
 
     showXPPopup();
 
     launchConfetti();
-
   }
 
   saveTasks();
 
   renderTasks();
-
 }
 
 /* =========================
@@ -244,13 +223,11 @@ function completeTask(index) {
 ========================= */
 
 function deleteTask(index) {
-
   tasks.splice(index, 1);
 
   saveTasks();
 
   renderTasks();
-
 }
 
 /* =========================
@@ -258,22 +235,12 @@ function deleteTask(index) {
 ========================= */
 
 function updateProgress() {
-
-  const completed =
-    tasks.filter(
-      task => task.completed
-    ).length;
+  const completed = tasks.filter((task) => task.completed).length;
 
   const progress =
-    tasks.length === 0
-      ? 0
-      : Math.floor(
-          (completed / tasks.length) * 100
-        );
+    tasks.length === 0 ? 0 : Math.floor((completed / tasks.length) * 100);
 
-  progressCircle.innerText =
-    `${progress}%`;
-
+  progressCircle.innerText = `${progress}%`;
 }
 
 /* =========================
@@ -281,17 +248,9 @@ function updateProgress() {
 ========================= */
 
 function saveTasks() {
+  localStorage.setItem("momentumTasks", JSON.stringify(tasks));
 
-  localStorage.setItem(
-    "momentumTasks",
-    JSON.stringify(tasks)
-  );
-
-  localStorage.setItem(
-    "momentumXP",
-    xp
-  );
-
+  localStorage.setItem("momentumXP", xp);
 }
 
 /* =========================
@@ -299,25 +258,19 @@ function saveTasks() {
 ========================= */
 
 function openTaskModal() {
-
   modalOverlay.classList.add("active");
-
 }
 
 function closeModal() {
-
   modalOverlay.classList.remove("active");
-
 }
 
 function clearModalInputs() {
-
   taskNameInput.value = "";
 
   taskTimeInput.value = "";
 
   taskDurationInput.value = "";
-
 }
 
 /* =========================
@@ -325,15 +278,11 @@ function clearModalInputs() {
 ========================= */
 
 function showXPPopup() {
-
   xpPopup.classList.add("show");
 
   setTimeout(() => {
-
     xpPopup.classList.remove("show");
-
   }, 2000);
-
 }
 
 /* =========================
@@ -341,65 +290,121 @@ function showXPPopup() {
 ========================= */
 
 function launchConfetti() {
-
-  const colors = [
-    "#58cc02",
-    "#ffd93d",
-    "#ff6b6b",
-    "#4d96ff",
-    "#ffffff"
-  ];
+  const colors = ["#58cc02", "#ffd93d", "#ff6b6b", "#4d96ff", "#ffffff"];
 
   for (let i = 0; i < 40; i++) {
-
-    const confetti =
-      document.createElement("div");
+    const confetti = document.createElement("div");
 
     confetti.classList.add("confetti");
 
-    confetti.style.left =
-      Math.random() * window.innerWidth + "px";
+    confetti.style.left = Math.random() * window.innerWidth + "px";
 
     confetti.style.background =
-      colors[
-        Math.floor(
-          Math.random() * colors.length
-        )
-      ];
+      colors[Math.floor(Math.random() * colors.length)];
 
-    confetti.style.animationDuration =
-      Math.random() * 2 + 2 + "s";
+    confetti.style.animationDuration = Math.random() * 2 + 2 + "s";
 
     confettiContainer.appendChild(confetti);
 
     setTimeout(() => {
-
       confetti.remove();
-
     }, 3000);
+  }
+}
 
+/* =========================
+   TIMER FUNCTIONS
+========================= */
+
+function updateTimerDisplay() {
+  const minutes = Math.floor(totalSeconds / 60);
+
+  const seconds = totalSeconds % 60;
+
+  timerCircle.innerText = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+}
+
+function startTimer() {
+  if (isRunning) {
+    clearInterval(timer);
+
+    isRunning = false;
+
+    startTimerBtn.innerText = "Start";
+
+    timerCircle.classList.remove("timer-active");
+
+    return;
   }
 
+  isRunning = true;
+
+  startTimerBtn.innerText = "Pause";
+
+  timerCircle.classList.add("timer-active");
+
+  timer = setInterval(() => {
+    totalSeconds--;
+
+    updateTimerDisplay();
+
+    if (totalSeconds <= 0) {
+      clearInterval(timer);
+
+      isRunning = false;
+
+      totalSeconds = 1500;
+
+      updateTimerDisplay();
+
+      startTimerBtn.innerText = "Start";
+
+      timerCircle.classList.remove("timer-active");
+
+      successSound.play();
+
+      launchConfetti();
+
+      xp += 25;
+
+      levelText.innerHTML = `⭐ XP ${xp}`;
+
+      showXPPopup();
+
+      saveTasks();
+
+      alert("Focus session completed 🚀");
+    }
+  }, 1000);
+}
+
+function resetTimer() {
+  clearInterval(timer);
+
+  isRunning = false;
+
+  totalSeconds = 1500;
+
+  updateTimerDisplay();
+
+  startTimerBtn.innerText = "Start";
+
+  timerCircle.classList.remove("timer-active");
 }
 
 /* =========================
    EVENT LISTENERS
 ========================= */
 
-openModal.addEventListener(
-  "click",
-  openTaskModal
-);
+openModal.addEventListener("click", openTaskModal);
 
-closeModalBtn.addEventListener(
-  "click",
-  closeModal
-);
+closeModalBtn.addEventListener("click", closeModal);
 
-createTaskBtn.addEventListener(
-  "click",
-  addTask
-);
+createTaskBtn.addEventListener("click", addTask);
+
+startTimerBtn.addEventListener("click", startTimer);
+
+resetTimerBtn.addEventListener("click", resetTimer);
 
 /* =========================
    INITIALIZE
@@ -407,5 +412,6 @@ createTaskBtn.addEventListener(
 
 renderTasks();
 
-levelText.innerHTML =
-  `⭐ XP ${xp}`;
+updateTimerDisplay();
+
+levelText.innerHTML = `⭐ XP ${xp}`;
