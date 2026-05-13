@@ -2,19 +2,33 @@ const clock = document.getElementById("clock");
 
 const taskList = document.querySelector(".task-list");
 
-const addBtn = document.querySelector(".add-btn");
-
 const progressCircle = document.querySelector(".progress-circle");
 
-const streakText = document.querySelector(".streak");
-
 const levelText = document.querySelector(".level");
+
+/* Modal */
+
+const modalOverlay = document.getElementById("modalOverlay");
+
+const openModal = document.getElementById("openModal");
+
+const closeModalBtn = document.getElementById("closeModalBtn");
+
+const createTaskBtn = document.getElementById("createTaskBtn");
+
+const taskNameInput = document.getElementById("taskName");
+
+const taskTimeInput = document.getElementById("taskTime");
+
+const taskDurationInput = document.getElementById("taskDuration");
+
+const taskEmojiInput = document.getElementById("taskEmoji");
+
+/* Data */
 
 let tasks = JSON.parse(localStorage.getItem("momentumTasks")) || [];
 
 let xp = Number(localStorage.getItem("momentumXP")) || 0;
-
-let completedTasks = 0;
 
 /* =========================
    LIVE CLOCK
@@ -59,6 +73,7 @@ function renderTasks() {
     `;
 
     updateProgress();
+
     return;
   }
 
@@ -73,7 +88,10 @@ function renderTasks() {
 
     taskDiv.innerHTML = `
       <div>
-        <h3>${task.emoji} ${task.name}</h3>
+        <h3>
+          ${task.emoji} ${task.name}
+        </h3>
+
         <p>
           ${task.time} • ${task.duration}
         </p>
@@ -81,13 +99,17 @@ function renderTasks() {
 
       <div class="task-actions">
 
-        <button class="complete-btn"
-          onclick="completeTask(${index})">
+        <button
+          class="complete-btn"
+          onclick="completeTask(${index})"
+        >
           ${task.completed ? "Done ✔" : "Complete"}
         </button>
 
-        <button class="delete-btn"
-          onclick="deleteTask(${index})">
+        <button
+          class="delete-btn"
+          onclick="deleteTask(${index})"
+        >
           Delete
         </button>
 
@@ -105,29 +127,31 @@ function renderTasks() {
 ========================= */
 
 function addTask() {
-  const taskName = prompt("Enter task name:");
+  const taskName = taskNameInput.value.trim();
+
+  const taskTime = taskTimeInput.value;
+
+  const taskDuration = taskDurationInput.value.trim();
+
+  const taskEmoji = taskEmojiInput.value;
 
   if (!taskName) return;
-
-  const taskTime = prompt("Enter task time:");
-
-  const taskDuration = prompt("Enter duration:");
-
-  const emojis = ["📚", "💻", "🔥", "🎯", "🚀", "🧠"];
-
-  const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
 
   tasks.push({
     name: taskName,
     time: taskTime || "Anytime",
     duration: taskDuration || "30 min",
-    emoji: randomEmoji,
+    emoji: taskEmoji,
     completed: false,
   });
 
   saveTasks();
 
   renderTasks();
+
+  closeModal();
+
+  clearModalInputs();
 }
 
 /* =========================
@@ -139,8 +163,6 @@ function completeTask(index) {
     tasks[index].completed = true;
 
     xp += 15;
-
-    completedTasks++;
 
     levelText.innerHTML = `⭐ XP ${xp}`;
   }
@@ -186,10 +208,34 @@ function saveTasks() {
 }
 
 /* =========================
+   MODAL
+========================= */
+
+function openTaskModal() {
+  modalOverlay.classList.add("active");
+}
+
+function closeModal() {
+  modalOverlay.classList.remove("active");
+}
+
+function clearModalInputs() {
+  taskNameInput.value = "";
+
+  taskTimeInput.value = "";
+
+  taskDurationInput.value = "";
+}
+
+/* =========================
    EVENT LISTENERS
 ========================= */
 
-addBtn.addEventListener("click", addTask);
+openModal.addEventListener("click", openTaskModal);
+
+closeModalBtn.addEventListener("click", closeModal);
+
+createTaskBtn.addEventListener("click", addTask);
 
 /* =========================
    INITIALIZE

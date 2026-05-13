@@ -19,21 +19,24 @@
 
   <body>
     <!-- Background Blobs -->
+
     <div class="blob blob1"></div>
     <div class="blob blob2"></div>
 
     <!-- Navbar -->
+
     <nav class="navbar">
       <div class="logo">Momentum 🚀</div>
 
       <div class="nav-right">
         <div class="streak">🔥 12 Day Streak</div>
 
-        <div class="level">⭐ Level 4</div>
+        <div class="level">⭐ XP 0</div>
       </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Hero -->
+
     <section class="hero">
       <div class="hero-text">
         <h1>Build Momentum Every Day.</h1>
@@ -43,60 +46,49 @@
     </section>
 
     <!-- Dashboard -->
+
     <main class="dashboard">
-      <!-- Left Side -->
+      <!-- Left Panel -->
+
       <section class="left-panel">
-        <!-- Progress Card -->
+        <!-- Progress -->
+
         <div class="card progress-card">
           <h2>Today's Progress</h2>
 
-          <div class="progress-circle">75%</div>
+          <div class="progress-circle">0%</div>
 
           <p>You're doing amazing today ✨</p>
         </div>
 
-        <!-- Task Section -->
+        <!-- Tasks -->
+
         <div class="card task-card">
           <div class="task-header">
             <h2>Today's Tasks</h2>
 
-            <button class="add-btn">+ Add Task</button>
+            <button class="add-btn" id="openModal">+ Add Task</button>
           </div>
 
           <div class="task-list">
-            <div class="task-item">
-              <div>
-                <h3>📚 Study DSA</h3>
-                <p>7:00 PM • 1 hr</p>
-              </div>
-
-              <button class="complete-btn">Complete</button>
-            </div>
-
-            <div class="task-item">
-              <div>
-                <h3>💻 Build Momentum UI</h3>
-                <p>9:00 PM • 2 hr</p>
-              </div>
-
-              <button class="complete-btn">Complete</button>
-            </div>
+            <div class="empty-state">No tasks yet 🚀</div>
           </div>
         </div>
       </section>
 
-      <!-- Right Side -->
+      <!-- Right Panel -->
+
       <section class="right-panel">
         <!-- Clock -->
+
         <div class="card clock-card">
           <h2>Current Time</h2>
 
           <h1 id="clock">08:45 PM</h1>
-
-          <p>Wednesday, 13 May</p>
         </div>
 
-        <!-- Focus Timer -->
+        <!-- Timer -->
+
         <div class="card timer-card">
           <h2>Focus Timer</h2>
 
@@ -104,11 +96,13 @@
 
           <div class="timer-buttons">
             <button>Start</button>
+
             <button>Reset</button>
           </div>
         </div>
 
-        <!-- Streak Card -->
+        <!-- Streak -->
+
         <div class="card streak-card">
           <h2>Weekly Streak</h2>
 
@@ -124,6 +118,39 @@
         </div>
       </section>
     </main>
+
+    <!-- Task Modal -->
+
+    <div class="modal-overlay" id="modalOverlay">
+      <div class="task-modal">
+        <h2>Create New Task 🚀</h2>
+
+        <input type="text" id="taskName" placeholder="Task name" />
+
+        <input type="time" id="taskTime" />
+
+        <input
+          type="text"
+          id="taskDuration"
+          placeholder="Duration (ex: 1 hr)"
+        />
+
+        <select id="taskEmoji">
+          <option>📚</option>
+          <option>💻</option>
+          <option>🔥</option>
+          <option>🎯</option>
+          <option>🚀</option>
+          <option>🧠</option>
+        </select>
+
+        <div class="modal-buttons">
+          <button id="createTaskBtn">Create Task</button>
+
+          <button id="closeModalBtn">Cancel</button>
+        </div>
+      </div>
+    </div>
 
     <script src="js/app.js"></script>
   </body>
