@@ -1,8 +1,16 @@
+/* =========================
+   RESET
+========================= */
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
+/* =========================
+   BODY
+========================= */
 
 body {
   font-family: "Nunito", sans-serif;
@@ -13,8 +21,120 @@ body {
 
   color: #1f2937;
 
+  overflow-x: hidden;
+
   transition: 0.3s ease;
 }
+
+/* =========================
+   ONBOARDING
+========================= */
+
+.onboarding {
+  position: fixed;
+
+  inset: 0;
+
+  background: linear-gradient(135deg, #58cc02, #7ee61a, #b7ff65);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 5000;
+}
+
+.onboarding.hidden {
+  display: none;
+}
+
+.onboarding-card {
+  width: 90%;
+  max-width: 450px;
+
+  background: white;
+
+  border-radius: 32px;
+
+  padding: 40px;
+
+  text-align: center;
+
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+
+  animation: fadeUp 0.6s ease;
+}
+
+.onboarding-card h1 {
+  font-size: 42px;
+
+  margin-bottom: 18px;
+
+  color: #1f2937;
+}
+
+.onboarding-card p {
+  color: #4b5563;
+
+  margin-bottom: 28px;
+
+  line-height: 1.7;
+
+  font-size: 17px;
+}
+
+.onboarding-card input {
+  width: 100%;
+
+  padding: 18px;
+
+  border-radius: 18px;
+
+  border: 2px solid #e5e7eb;
+
+  outline: none;
+
+  font-size: 16px;
+
+  margin-bottom: 20px;
+
+  font-family: inherit;
+}
+
+.onboarding-card input:focus {
+  border-color: #58cc02;
+}
+
+.onboarding-card button {
+  width: 100%;
+
+  border: none;
+
+  padding: 18px;
+
+  border-radius: 18px;
+
+  background: #58cc02;
+
+  color: white;
+
+  font-size: 16px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.onboarding-card button:hover {
+  transform: translateY(-2px);
+
+  background: #4fb800;
+}
+
+/* =========================
+   MAIN CONTENT
+========================= */
 
 .main-content {
   margin-left: 260px;
@@ -22,7 +142,9 @@ body {
   padding: 40px;
 }
 
-/* Topbar */
+/* =========================
+   TOPBAR
+========================= */
 
 .topbar {
   display: flex;
@@ -34,17 +156,21 @@ body {
 
 .topbar h1 {
   font-size: 42px;
+
   color: white;
+
+  margin-bottom: 8px;
 }
 
 .topbar p {
   color: rgba(255, 255, 255, 0.9);
 
-  margin-top: 6px;
+  font-size: 17px;
 }
 
 .topbar-right {
   display: flex;
+
   gap: 14px;
 }
 
@@ -59,17 +185,22 @@ body {
   border-radius: 18px;
 
   color: white;
+
   font-weight: 700;
+
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
-/* Quote */
+/* =========================
+   QUOTE CARD
+========================= */
 
 .quote-card {
   margin-bottom: 28px;
 
   background: rgba(255, 255, 255, 0.2);
 
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
 
   padding: 20px 24px;
 
@@ -80,10 +211,205 @@ body {
   font-size: 18px;
   font-weight: 700;
 
-  max-width: 600px;
+  max-width: 650px;
+
+  line-height: 1.7;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
-/* Dashboard */
+/* =========================
+   STATS
+========================= */
+
+.stats-grid {
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 20px;
+
+  margin-bottom: 28px;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.25);
+
+  backdrop-filter: blur(16px);
+
+  border-radius: 28px;
+
+  padding: 28px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  transition: 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+}
+
+.stat-card h3 {
+  color: white;
+
+  margin-bottom: 14px;
+
+  font-size: 18px;
+}
+
+.stat-card h2 {
+  color: white;
+
+  font-size: 38px;
+}
+
+/* =========================
+   ANALYTICS
+========================= */
+
+.analytics-section {
+  display: grid;
+
+  grid-template-columns: 2fr 1fr;
+
+  gap: 24px;
+
+  margin-bottom: 28px;
+}
+
+.analytics-card,
+.heatmap-card {
+  min-height: 350px;
+}
+
+.analytics-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 24px;
+}
+
+.analytics-header h2,
+.heatmap-card h2 {
+  color: white;
+}
+
+.analytics-header span {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* =========================
+   HEATMAP
+========================= */
+
+.heatmap-grid {
+  display: grid;
+
+  grid-template-columns: repeat(7, 1fr);
+
+  gap: 10px;
+}
+
+.heat {
+  width: 100%;
+
+  aspect-ratio: 1;
+
+  border-radius: 8px;
+
+  transition: 0.3s ease;
+}
+
+.heat:hover {
+  transform: scale(1.1);
+}
+
+.heat.low {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.heat.medium {
+  background: #9be15d;
+}
+
+.heat.active {
+  background: #58cc02;
+}
+
+/* =========================
+   SEARCH FILTER
+========================= */
+
+.search-section {
+  display: flex;
+
+  gap: 16px;
+
+  margin-bottom: 28px;
+}
+
+.search-section input,
+.search-section select {
+  border: none;
+
+  padding: 16px 18px;
+
+  border-radius: 18px;
+
+  font-size: 16px;
+
+  font-family: inherit;
+
+  outline: none;
+
+  background: rgba(255, 255, 255, 0.25);
+
+  backdrop-filter: blur(10px);
+
+  color: white;
+
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.search-section input {
+  flex: 1;
+}
+
+.search-section input::placeholder {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.card {
+  background: rgba(255, 255, 255, 0.25);
+
+  backdrop-filter: blur(16px);
+
+  border-radius: 28px;
+
+  padding: 28px;
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+
+  transition: 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+/* =========================
+   DASHBOARD
+========================= */
 
 .dashboard {
   display: grid;
@@ -101,64 +427,18 @@ body {
   gap: 24px;
 }
 
-/* Cards */
-
-.card,
-.stat-card {
-  background: rgba(255, 255, 255, 0.25);
-
-  backdrop-filter: blur(16px);
-
-  border-radius: 28px;
-
-  padding: 28px;
-
-  border: 1px solid rgba(255, 255, 255, 0.2);
-
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-
-  transition: 0.3s ease;
-}
-
-.card:hover,
-.stat-card:hover {
-  transform: translateY(-4px);
-}
-
-/* Stats */
-
-.stats-grid {
-  display: grid;
-
-  grid-template-columns: repeat(4, 1fr);
-
-  gap: 20px;
-
-  margin-bottom: 28px;
-}
-
-.stat-card h3 {
-  color: white;
-
-  margin-bottom: 12px;
-}
-
-.stat-card h2 {
-  font-size: 34px;
-
-  color: white;
-}
-
-/* Progress */
+/* =========================
+   PROGRESS CARD
+========================= */
 
 .progress-card {
   text-align: center;
 }
 
 .progress-card h2 {
-  margin-bottom: 24px;
-
   color: white;
+
+  margin-bottom: 24px;
 }
 
 .progress-circle {
@@ -179,6 +459,8 @@ body {
   font-weight: 800;
 
   color: #58cc02;
+
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
 }
 
 .progress-card p {
@@ -189,7 +471,9 @@ body {
   font-weight: 700;
 }
 
-/* Tasks */
+/* =========================
+   TASKS
+========================= */
 
 .task-header {
   display: flex;
@@ -240,18 +524,29 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  transition: 0.3s ease;
+}
+
+.task-item:hover {
+  transform: translateX(4px);
 }
 
 .task-item h3 {
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+
+  font-size: 20px;
 }
 
 .task-item p {
   color: #4b5563;
+
+  font-weight: 600;
 }
 
 .task-actions {
   display: flex;
+
   gap: 10px;
 }
 
@@ -266,19 +561,85 @@ body {
   font-weight: 700;
 
   cursor: pointer;
+
+  transition: 0.3s;
 }
 
 .complete-btn {
   background: #58cc02;
+
   color: white;
+}
+
+.complete-btn:hover {
+  background: #4fb800;
 }
 
 .delete-btn {
   background: #ff5a5f;
+
   color: white;
 }
 
-/* Clock */
+.delete-btn:hover {
+  background: #ff3d43;
+}
+
+/* =========================
+   PRIORITY
+========================= */
+
+.priority-badge {
+  padding: 8px 12px;
+
+  border-radius: 12px;
+
+  font-size: 13px;
+  font-weight: 800;
+
+  color: white;
+
+  margin-top: 10px;
+
+  display: inline-block;
+}
+
+.priority-high {
+  background: #ff4d4f;
+}
+
+.priority-medium {
+  background: #ffb800;
+}
+
+.priority-low {
+  background: #58cc02;
+}
+
+/* =========================
+   CATEGORY
+========================= */
+
+.category-tag {
+  margin-top: 10px;
+
+  display: inline-block;
+
+  padding: 8px 12px;
+
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.3);
+
+  color: white;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* =========================
+   CLOCK
+========================= */
 
 .clock-card h2,
 .timer-card h2 {
@@ -286,14 +647,16 @@ body {
 }
 
 .clock-card h1 {
-  font-size: 52px;
+  font-size: 54px;
 
   color: white;
 
-  margin-top: 16px;
+  margin-top: 18px;
 }
 
-/* Timer */
+/* =========================
+   TIMER
+========================= */
 
 .timer-card {
   text-align: center;
@@ -329,6 +692,8 @@ body {
 .timer-buttons button {
   border: none;
 
+  background: white;
+
   padding: 12px 22px;
 
   border-radius: 14px;
@@ -336,9 +701,35 @@ body {
   font-weight: 700;
 
   cursor: pointer;
+
+  transition: 0.3s;
 }
 
-/* Modal */
+.timer-buttons button:hover {
+  transform: scale(1.05);
+}
+
+.timer-active {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.03);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* =========================
+   MODAL
+========================= */
 
 .modal-overlay {
   position: fixed;
@@ -355,9 +746,9 @@ body {
 
   pointer-events: none;
 
-  transition: 0.3s;
+  transition: 0.3s ease;
 
-  z-index: 999;
+  z-index: 1000;
 }
 
 .modal-overlay.active {
@@ -383,11 +774,19 @@ body {
 
   transform: scale(0.8);
 
-  transition: 0.3s;
+  transition: 0.3s ease;
 }
 
 .modal-overlay.active .task-modal {
   transform: scale(1);
+}
+
+.task-modal h2 {
+  text-align: center;
+
+  color: #1f2937;
+
+  margin-bottom: 10px;
 }
 
 .task-modal input,
@@ -403,10 +802,18 @@ body {
   outline: none;
 
   font-family: inherit;
+
+  font-size: 16px;
+}
+
+.task-modal input:focus,
+.task-modal select:focus {
+  border-color: #58cc02;
 }
 
 .modal-buttons {
   display: flex;
+
   gap: 12px;
 }
 
@@ -422,14 +829,31 @@ body {
   font-weight: 800;
 
   cursor: pointer;
+
+  transition: 0.3s;
 }
 
 #createTaskBtn {
   background: #58cc02;
+
   color: white;
 }
 
-/* XP Popup */
+#createTaskBtn:hover {
+  background: #4fb800;
+}
+
+#closeModalBtn {
+  background: #f3f4f6;
+}
+
+#closeModalBtn:hover {
+  background: #e5e7eb;
+}
+
+/* =========================
+   XP POPUP
+========================= */
 
 #xp-popup {
   position: fixed;
@@ -447,11 +871,13 @@ body {
 
   font-weight: 800;
 
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+
   opacity: 0;
 
   transform: translateY(-20px);
 
-  transition: 0.4s;
+  transition: 0.4s ease;
 
   z-index: 999;
 }
@@ -462,7 +888,9 @@ body {
   transform: translateY(0);
 }
 
-/* Confetti */
+/* =========================
+   CONFETTI
+========================= */
 
 .confetti {
   position: fixed;
@@ -475,6 +903,8 @@ body {
   top: -20px;
 
   animation: fall 3s linear forwards;
+
+  z-index: 999;
 }
 
 @keyframes fall {
@@ -485,27 +915,9 @@ body {
   }
 }
 
-/* Timer Animation */
-
-.timer-active {
-  animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-
-  50% {
-    transform: scale(1.03);
-  }
-
-  100% {
-    transform: scale(1);
-  }
-}
-
-/* Empty */
+/* =========================
+   EMPTY STATE
+========================= */
 
 .empty-state {
   text-align: center;
@@ -515,17 +927,38 @@ body {
   font-weight: 700;
 
   padding: 30px;
+
+  font-size: 18px;
 }
 
-/* Responsive */
+/* =========================
+   ANIMATIONS
+========================= */
 
-@media (max-width: 1100px) {
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
 
-  .dashboard {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1100px) {
+  .dashboard,
+  .analytics-section {
     grid-template-columns: 1fr;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -536,10 +969,6 @@ body {
     padding: 20px;
   }
 
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
-
   .topbar {
     flex-direction: column;
     align-items: flex-start;
@@ -547,10 +976,30 @@ body {
     gap: 20px;
   }
 
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .search-section {
+    flex-direction: column;
+  }
+
   .task-item {
     flex-direction: column;
     align-items: flex-start;
 
     gap: 16px;
+  }
+
+  .task-actions {
+    width: 100%;
+  }
+
+  .task-actions button {
+    flex: 1;
+  }
+
+  .topbar h1 {
+    font-size: 34px;
   }
 }

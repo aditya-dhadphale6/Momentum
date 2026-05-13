@@ -46,6 +46,34 @@ const taskDurationInput = document.getElementById("taskDuration");
 
 const taskEmojiInput = document.getElementById("taskEmoji");
 
+const taskPriorityInput = document.getElementById("taskPriority");
+
+const taskDateInput = document.getElementById("taskDate");
+
+const taskCategoryInput = document.getElementById("taskCategory");
+
+/* Search */
+
+const searchInput = document.getElementById("searchInput");
+
+const filterPriority = document.getElementById("filterPriority");
+
+/* Onboarding */
+
+const onboarding = document.getElementById("onboarding");
+
+const usernameInput = document.getElementById("usernameInput");
+
+const startJourneyBtn = document.getElementById("startJourneyBtn");
+
+/* Import Export */
+
+const exportBtn = document.getElementById("exportBtn");
+
+const importBtn = document.getElementById("importBtn");
+
+const importInput = document.getElementById("importInput");
+
 /* Sounds */
 
 const completeSound = document.getElementById("completeSound");
@@ -80,6 +108,8 @@ let lastVisit = localStorage.getItem("momentumLastVisit");
 
 let focusSessions = Number(localStorage.getItem("momentumFocus")) || 0;
 
+let username = localStorage.getItem("momentumUser");
+
 /* Timer */
 
 let timer;
@@ -87,6 +117,10 @@ let timer;
 let totalSeconds = 1500;
 
 let isRunning = false;
+
+/* Chart */
+
+let productivityChart;
 
 /* Quotes */
 
@@ -102,6 +136,10 @@ const quotes = [
   "Stay patient and trust the process.",
 
   "Success is built daily.",
+
+  "Consistency beats intensity.",
+
+  "Focus creates excellence.",
 ];
 
 /* =========================
@@ -219,6 +257,7 @@ function renderTasks() {
 
     taskDiv.innerHTML = `
       <div>
+
         <h3>
           ${task.emoji} ${task.name}
         </h3>
@@ -226,6 +265,22 @@ function renderTasks() {
         <p>
           ${task.time} • ${task.duration}
         </p>
+
+        <div class="
+          priority-badge
+          priority-${task.priority}
+        ">
+          ${task.priority.toUpperCase()}
+        </div>
+
+        <div class="category-tag">
+          ${task.category}
+        </div>
+
+        <p style="margin-top:10px;">
+          📅 ${task.dueDate || "No due date"}
+        </p>
+
       </div>
 
       <div class="task-actions">
@@ -257,7 +312,25 @@ function renderTasks() {
   updateProgress();
 
   updateStats();
+
+  initializeSortable();
 }
+
+/* =========================
+   DRAG DROP
+========================= */
+
+function initializeSortable() {
+  new Sortable(taskList, {
+    animation: 200,
+
+    ghostClass: "sortable-ghost",
+  });
+}
+
+/* =========================
+   ADD TASK
+========================= */
 
 function addTask() {
   const taskName = taskNameInput.value.trim();
@@ -266,9 +339,19 @@ function addTask() {
 
   tasks.push({
     name: taskName,
+
     time: taskTimeInput.value || "Anytime",
+
     duration: taskDurationInput.value || "30 min",
+
     emoji: taskEmojiInput.value,
+
+    priority: taskPriorityInput.value,
+
+    dueDate: taskDateInput.value,
+
+    category: taskCategoryInput.value || "General",
+
     completed: false,
   });
 
@@ -281,6 +364,10 @@ function addTask() {
   clearModalInputs();
 }
 
+/* =========================
+   COMPLETE TASK
+========================= */
+
 function completeTask(index) {
   if (!tasks[index].completed) {
     tasks[index].completed = true;
@@ -292,6 +379,8 @@ function completeTask(index) {
     launchConfetti();
 
     showXPPopup();
+
+    sendNotification("Task completed successfully 🎉");
   }
 
   saveData();
@@ -301,12 +390,41 @@ function completeTask(index) {
   updateLevel();
 }
 
+/* =========================
+   DELETE TASK
+========================= */
+
 function deleteTask(index) {
   tasks.splice(index, 1);
 
   saveData();
 
   renderTasks();
+}
+
+/* =========================
+   SEARCH FILTER
+========================= */
+
+function filterTasks() {
+  const searchValue = searchInput.value.toLowerCase();
+
+  const priorityValue = filterPriority.value;
+
+  const taskItems = document.querySelectorAll(".task-item");
+
+  tasks.forEach((task, index) => {
+    const matchesSearch = task.name.toLowerCase().includes(searchValue);
+
+    const matchesPriority =
+      priorityValue === "all" || task.priority === priorityValue;
+
+    if (matchesSearch && matchesPriority) {
+      taskItems[index].style.display = "flex";
+    } else {
+      taskItems[index].style.display = "none";
+    }
+  });
 }
 
 /* =========================
@@ -342,6 +460,58 @@ function updateStats() {
 }
 
 /* =========================
+   CHART
+========================= */
+
+function renderChart() {
+  const ctx = document.getElementById("productivityChart").getContext("2d");
+
+  if (productivityChart) {
+    productivityChart.destroy();
+  }
+
+  productivityChart = new Chart(ctx, {
+    type: "line",
+
+    data: {
+      labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+
+      datasets: [
+        {
+          label: "Productivity",
+
+          data: [40, 60, 50, 80, 75, 90, 100],
+
+          borderColor: "#ffffff",
+
+          backgroundColor: "rgba(255,255,255,0.2)",
+
+          borderWidth: 4,
+
+          tension: 0.4,
+
+          fill: true,
+
+          pointBackgroundColor: "#ffffff",
+
+          pointRadius: 5,
+        },
+      ],
+    },
+
+    options: {
+      responsive: true,
+
+      plugins: {
+        legend: {
+          display: false,
+        },
+      },
+    },
+  });
+}
+
+/* =========================
    STORAGE
 ========================= */
 
@@ -371,6 +541,10 @@ function clearModalInputs() {
   taskTimeInput.value = "";
 
   taskDurationInput.value = "";
+
+  taskDateInput.value = "";
+
+  taskCategoryInput.value = "";
 }
 
 /* =========================
@@ -477,7 +651,7 @@ function startTimer() {
 
       timerCircle.classList.remove("timer-active");
 
-      alert("Focus session completed 🚀");
+      sendNotification("Focus session completed 🚀");
     }
   }, 1000);
 }
@@ -505,6 +679,112 @@ function toggleTheme() {
 }
 
 /* =========================
+   ONBOARDING
+========================= */
+
+function checkUser() {
+  if (username) {
+    onboarding.classList.add("hidden");
+
+    greeting.innerText = `Welcome back, ${username} 🚀`;
+  }
+}
+
+function startJourney() {
+  const name = usernameInput.value.trim();
+
+  if (!name) return;
+
+  username = name;
+
+  localStorage.setItem("momentumUser", username);
+
+  onboarding.classList.add("hidden");
+
+  greeting.innerText = `Welcome, ${username} 🚀`;
+}
+
+/* =========================
+   NOTIFICATIONS
+========================= */
+
+function requestNotificationPermission() {
+  if ("Notification" in window) {
+    Notification.requestPermission();
+  }
+}
+
+function sendNotification(message) {
+  if (Notification.permission === "granted") {
+    new Notification("Momentum 🚀", {
+      body: message,
+    });
+  }
+}
+
+/* =========================
+   EXPORT IMPORT
+========================= */
+
+function exportData() {
+  const data = {
+    tasks,
+    xp,
+    streak,
+    focusSessions,
+    username,
+  };
+
+  const blob = new Blob([JSON.stringify(data, null, 2)], {
+    type: "application/json",
+  });
+
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+
+  a.href = url;
+
+  a.download = "momentum-data.json";
+
+  a.click();
+}
+
+function importData(event) {
+  const file = event.target.files[0];
+
+  if (!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = function (e) {
+    const data = JSON.parse(e.target.result);
+
+    tasks = data.tasks || [];
+
+    xp = data.xp || 0;
+
+    streak = data.streak || 1;
+
+    focusSessions = data.focusSessions || 0;
+
+    username = data.username || "User";
+
+    saveData();
+
+    renderTasks();
+
+    updateStats();
+
+    updateLevel();
+
+    alert("Data imported successfully 🚀");
+  };
+
+  reader.readAsText(file);
+}
+
+/* =========================
    EVENT LISTENERS
 ========================= */
 
@@ -519,6 +799,18 @@ createTaskBtn.addEventListener("click", addTask);
 startTimerBtn.addEventListener("click", startTimer);
 
 resetTimerBtn.addEventListener("click", resetTimer);
+
+searchInput.addEventListener("input", filterTasks);
+
+filterPriority.addEventListener("change", filterTasks);
+
+startJourneyBtn.addEventListener("click", startJourney);
+
+exportBtn.addEventListener("click", exportData);
+
+importBtn.addEventListener("click", () => importInput.click());
+
+importInput.addEventListener("change", importData);
 
 /* =========================
    INITIALIZE
@@ -539,3 +831,9 @@ updateTimerDisplay();
 renderTasks();
 
 updateStats();
+
+renderChart();
+
+checkUser();
+
+requestNotificationPermission();

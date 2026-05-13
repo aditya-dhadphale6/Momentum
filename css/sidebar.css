@@ -54,7 +54,16 @@
   background: rgba(255, 255, 255, 0.2);
 }
 
-#themeToggle {
+.sidebar-bottom {
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+}
+
+#themeToggle,
+#exportBtn,
+#importBtn {
   border: none;
 
   background: white;

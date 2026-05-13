@@ -26,24 +26,48 @@
   </head>
 
   <body>
+    <!-- Onboarding -->
+
+    <div class="onboarding" id="onboarding">
+      <div class="onboarding-card">
+        <h1>Welcome to Momentum 🚀</h1>
+
+        <p>Build discipline, track focus, and grow every single day.</p>
+
+        <input type="text" id="usernameInput" placeholder="Enter your name" />
+
+        <button id="startJourneyBtn">Start Journey</button>
+      </div>
+    </div>
+
     <!-- Sidebar -->
 
     <aside class="sidebar">
-      <div class="sidebar-logo">Momentum 🚀</div>
+      <div>
+        <div class="sidebar-logo">Momentum 🚀</div>
 
-      <nav class="sidebar-nav">
-        <a href="#"> 🏠 Dashboard </a>
+        <nav class="sidebar-nav">
+          <a href="#"> 🏠 Dashboard </a>
 
-        <a href="#"> ✅ Tasks </a>
+          <a href="#"> ✅ Tasks </a>
 
-        <a href="#"> ⏳ Focus </a>
+          <a href="#"> ⏳ Focus </a>
 
-        <a href="#"> 📈 Analytics </a>
+          <a href="#"> 📈 Analytics </a>
 
-        <a href="#"> ⚙ Settings </a>
-      </nav>
+          <a href="#"> ⚙ Settings </a>
+        </nav>
+      </div>
 
-      <button id="themeToggle">🌙 Dark Mode</button>
+      <div class="sidebar-bottom">
+        <button id="themeToggle">🌙 Dark Mode</button>
+
+        <button id="exportBtn">📤 Export Data</button>
+
+        <input type="file" id="importInput" hidden />
+
+        <button id="importBtn">📥 Import Data</button>
+      </div>
     </aside>
 
     <!-- Main Content -->
@@ -99,10 +123,74 @@
         </div>
       </section>
 
+      <!-- Analytics -->
+
+      <section class="analytics-section">
+        <!-- Chart -->
+
+        <div class="card analytics-card">
+          <div class="analytics-header">
+            <h2>Weekly Productivity</h2>
+
+            <span> Last 7 Days </span>
+          </div>
+
+          <canvas id="productivityChart"></canvas>
+        </div>
+
+        <!-- Heatmap -->
+
+        <div class="card heatmap-card">
+          <h2>Activity Heatmap</h2>
+
+          <div class="heatmap-grid">
+            <div class="heat active"></div>
+            <div class="heat active"></div>
+            <div class="heat medium"></div>
+            <div class="heat low"></div>
+            <div class="heat active"></div>
+            <div class="heat medium"></div>
+            <div class="heat low"></div>
+
+            <div class="heat medium"></div>
+            <div class="heat active"></div>
+            <div class="heat low"></div>
+            <div class="heat medium"></div>
+            <div class="heat active"></div>
+            <div class="heat active"></div>
+            <div class="heat low"></div>
+
+            <div class="heat active"></div>
+            <div class="heat medium"></div>
+            <div class="heat active"></div>
+            <div class="heat low"></div>
+            <div class="heat active"></div>
+            <div class="heat medium"></div>
+            <div class="heat active"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Search -->
+
+      <section class="search-section">
+        <input type="text" id="searchInput" placeholder="Search tasks..." />
+
+        <select id="filterPriority">
+          <option value="all">All Priorities</option>
+
+          <option value="high">High</option>
+
+          <option value="medium">Medium</option>
+
+          <option value="low">Low</option>
+        </select>
+      </section>
+
       <!-- Dashboard -->
 
       <main class="dashboard">
-        <!-- Left Panel -->
+        <!-- Left -->
 
         <section class="left-panel">
           <!-- Progress -->
@@ -130,7 +218,7 @@
           </div>
         </section>
 
-        <!-- Right Panel -->
+        <!-- Right -->
 
         <section class="right-panel">
           <!-- Clock -->
@@ -158,7 +246,7 @@
       </main>
     </div>
 
-    <!-- Modal -->
+    <!-- Task Modal -->
 
     <div class="modal-overlay" id="modalOverlay">
       <div class="task-modal">
@@ -169,6 +257,18 @@
         <input type="time" id="taskTime" />
 
         <input type="text" id="taskDuration" placeholder="Duration" />
+
+        <select id="taskPriority">
+          <option value="low">🟢 Low Priority</option>
+
+          <option value="medium">🟡 Medium Priority</option>
+
+          <option value="high">🔴 High Priority</option>
+        </select>
+
+        <input type="date" id="taskDate" />
+
+        <input type="text" id="taskCategory" placeholder="Category" />
 
         <select id="taskEmoji">
           <option>📚</option>
@@ -200,6 +300,14 @@
     <!-- Confetti -->
 
     <div id="confetti-container"></div>
+
+    <!-- Libraries -->
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+
+    <!-- App -->
 
     <script src="js/app.js"></script>
   </body>
